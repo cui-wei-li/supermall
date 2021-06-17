@@ -1,0 +1,49 @@
+<template>
+  <div>
+    <nav-bar class="home-nav">
+      <div slot="center">购物街</div>
+    </nav-bar>
+    <home-swiper :banners="banners"></home-swiper>
+    <recommend-view :recommends="recommends"></recommend-view>
+  </div>
+</template>
+
+<script>
+import NavBar from  'components/common/navbar/NavBar.vue'
+import HomeSwiper from './childComps/HomeSwiper.vue'
+import RecommendView from './childComps/RecommendView.vue'
+
+import {getHomeMultidata} from 'network/home'
+
+
+export default {
+    name: 'Home',
+    components: {
+      NavBar,
+      HomeSwiper,
+      RecommendView
+    },
+    data() {
+      return {
+        banners: [],
+        recommends: []
+      }
+    },
+    //创建好组件之后就要发送异步网络请求数据
+    created() {
+      //请求多个数据(异步操作)
+      getHomeMultidata().then( res => {
+        console.log(res);
+        this.banners = res.data.banner.list;
+        this.recommends = res.data.recommend.list;
+      })
+    }
+}
+</script>
+
+<style>
+  .home-nav {
+    background-color: var(--color-tint);
+    color: #fff
+  }
+</style>

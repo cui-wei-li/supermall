@@ -15,6 +15,7 @@ export default {
     props: {
         recommends: {
             type: Array,
+            //当默认值是数组或对象时,默认值必须是一个函数 
             default() {
                 return []
             }
@@ -30,8 +31,8 @@ export default {
         width: 100%;
         text-align: center;
         font-size: 12px;
-        padding: 10px 0 25px;
-        border-bottom: 8px solid #eee;
+        padding: 10px 0 20px;
+        border-bottom: 10px solid #eee;
     }
 
     .recommend-item {
@@ -39,8 +40,8 @@ export default {
     }
 
     .recommend-item img {
-        width: 70px;
-        height: 70px;
+        width: 60px;
+        height: 60px;
         margin-bottom: 10px;
     }
 </style>

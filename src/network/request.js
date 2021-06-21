@@ -52,8 +52,11 @@ export function require(config) {
      
     //1、创建实例
     const instance = axios.create({
-        baseURL: 'http://123.207.32.32:8000',
-        timeout: 5000
+        //baseURL: 'http://123.207.32.32:8000',
+        //baseURL: 'http://106.54.54.237:8000'
+        //http://152.136.185.210:8000
+        baseURL: 'http://152.136.185.210:7878/api/m5',
+        timeout: 500000
     })
 
 

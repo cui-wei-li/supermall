@@ -4,15 +4,18 @@
     <nav-bar class="home-nav">
       <div slot="center">购物街</div>
     </nav-bar>
-
+    <tab-control  class="tab-control" 
+                  :titles="['流行','新款','精选']" 
+                  @tabClick="tabClick" ref="tabControl1" v-show="isTabFixed"/>
     <scroll class="content" 
             ref="scroll" 
             :probe-type="3" @scroll="contentScroll" 
             :pull-up-load="true" @pullingUp="loadMore">
-      <home-swiper :banners="banners"></home-swiper>
+      <home-swiper :banners="banners" @swiperImageLoad="swiperImageLoad"></home-swiper>
       <recommend-view :recommends="recommends"></recommend-view>
       <feature-view></feature-view>
-      <tab-control class="tab-control" :titles="['流行','新款','精选']" @tabClick="tabClick"/>
+      <tab-control :titles="['流行','新款','精选']" 
+                  @tabClick="tabClick" ref="tabControl2"/>
       <goods-list :goods="showGoods"/>
     </scroll>
 
@@ -35,7 +38,6 @@ import BackTop from 'components/content/backTop/BackTop.vue'
 
 import {getHomeMultidata,getHomeGoods} from 'network/home'
 import {debounce} from 'common/utils.js'
-
 
 export default {
     name: 'Home',
@@ -60,7 +62,10 @@ export default {
           'sell': {page: 0, list: []}
         },
         currentType: 'pop',
-        isShowBackTop: false
+        isShowBackTop: false,
+        tabOffsetTop: 0,
+        isTabFixed: false,
+        saveY: 0
       }
     },
     //创建好组件之后就要发送异步网络请求数据
@@ -75,19 +80,25 @@ export default {
 
     },
     mounted() {
-      //监听事件总线
+      //监听事件总线(图片加载完的事件监听)
       const refresh = debounce(this.$refs.scroll.refresh,500);
 
       this.$bus.$on("itemImageLoad",() => {
         // this.$refs.scroll.refresh();
         refresh();
       })
-
     },
     computed: {
       showGoods() {
         return this.goods[this.currentType].list;
       }
+    },
+    activated() {
+      this.$refs.scroll.scrollTo(0,this.saveY,0);
+      this.$refs.scroll.refresh();
+    },
+    deactivated() {
+      this.saveY = this.$refs.scroll.getScrollY();
     },
     methods: {
       getHomeMultidata() {
@@ -121,6 +132,8 @@ export default {
             this.currentType ='sell';
             break;
         }
+        this.$refs.tabControl1.currentIndex = index;
+        this.$refs.tabControl2.currentIndex = index;
       },
       backClick() {
         this.$refs.scroll.scrollTo(0,0,500)
@@ -128,12 +141,20 @@ export default {
       contentScroll(position){
         //console.log(position);
         this.isShowBackTop = -position.y > 1000
+
+        //决定tabControl是否吸顶
+        this.isTabFixed = (-position.y) > this.tabOffsetTop
       },
       loadMore() {
         console.log("上拉加载更多");
         this.getHomeGoods(this.currentType)
       },
-      
+      swiperImageLoad() {
+        //tabControl的offsetTop
+        //所有的组件都有一个属性$el:用于获取组件中的元素
+        this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop;
+        //console.log("------------"+this.tabOffsetTop)
+      }
     }
 }
 </script>
@@ -147,7 +168,9 @@ export default {
   .home-nav {
     background-color: var(--color-tint);
     color: #fff;
-    /* position: fixed;
+
+    /* 在使用浏览器原生滚动时,为了不让导航跟着一起滚动,使用固定位置
+    position: fixed;
     left: 0;
     right: 0;
     top: 0;
@@ -175,4 +198,5 @@ export default {
     left: 0;
     right: 0;
   }
+
 </style>

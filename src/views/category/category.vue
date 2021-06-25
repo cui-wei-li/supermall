@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <!-- <div class="wrapper">
     <ul class="content">
       <li>分类列表1</li>
       <li>分类列表2</li>
@@ -102,40 +102,41 @@
       <li>分类列表99</li>
       <li>分类列表100</li>
     </ul>
-  </div>  
+  </div>   -->
+  <div>分类</div>
 </template>
 
 <script>
 import BScroll from 'better-scroll'
 
 export default {
-    name: 'Category',
-    data() {
-      return {
-        scroll: null
-      }
-    },
-    //组件创建完毕之后调用
-    created() {
+    // name: 'Category',
+    // data() {
+    //   return {
+    //     scroll: null
+    //   }
+    // },
+    // //组件创建完毕之后调用
+    // created() {
       
-    },
-    mounted() {
-      //默认情况下BScroll不可以实时的监听滚动位置
-      //probe:0和1都不侦测实时的位置，2：在手指滚动过程中侦测实时的位置，手指离开后的惯性不侦测，3:只要是滚动，都侦测
-      //click:
-      this.scroll = new BScroll(document.querySelector('.wrapper'),{
-        probeType: 2,
-        click: true,
-      })
-    }
+    // },
+    // mounted() {
+    //   //默认情况下BScroll不可以实时的监听滚动位置
+    //   //probe:0和1都不侦测实时的位置，2：在手指滚动过程中侦测实时的位置，手指离开后的惯性不侦测，3:只要是滚动，都侦测
+    //   //click:
+    //   this.scroll = new BScroll(document.querySelector('.wrapper'),{
+    //     probeType: 2,
+    //     click: true,
+    //   })
+    // }
 }
 </script>
 
 <style>
-   .wrapper {
+   /* .wrapper {
     height: 150px;
     background-color:red;
     overflow: hidden; 
-    /* overflow-y: scroll; */
-  } 
+    /* overflow-y: scroll; 
+  } */
 </style>

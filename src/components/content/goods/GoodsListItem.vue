@@ -1,6 +1,6 @@
 <template>
   <div class="goods-item" @click="itemClick">
-      <img :src="goodsItem.show.img" alt="" @load="imageLoad"/>
+      <img :src="showImage" alt="" @load="imageLoad"/>
       <div class="goods-info">
         <p>{{goodsItem.title}}</p>
         <span class="price">{{goodsItem.price}}</span>
@@ -20,6 +20,12 @@ export default {
             }
         }
     },
+    computed: {
+      showImage() {
+        return this.goodsItem.img || this.goodsItem.image || this.goodsItem.show.img
+      }
+      
+    },
     methods: {
       imageLoad() {
         //console.log("-----");
@@ -33,7 +39,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
  .goods-item {
     padding-bottom: 40px;
     position: relative;

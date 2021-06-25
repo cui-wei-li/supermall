@@ -31,9 +31,12 @@ export default {
     methods: {
         titleClick(index) {
             this.currentIndex = index;
+            //实现详情页标题和主题的联动效果
+            this.$emit('titleClick',index)
         },
         backClick() {
             this.$router.back();
+            //this.$router.go(-1);
         }
     }
 }
